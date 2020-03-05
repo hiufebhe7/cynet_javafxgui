@@ -11,8 +11,8 @@
 cynet gui是一个基于mastodon的网络类网盘协议的gui版本。
 扩展了mastodon的 **上传 下载 分享链接** 功能 
 
-##基于jvm能够在主流pc平台上使用
-###使用javafx+kotlin+tornadofx
+## 基于jvm能够在主流pc平台上使用
+### 使用javafx+kotlin+tornadofx
 | Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-orange.svg?logo=linux)  | Mac Os<br>![img](https://img.shields.io/badge/build-success-orange.svg?logo=apple)  |
 | --- | --- | --- | 
 
