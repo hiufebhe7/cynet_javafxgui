@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" prefHeight="100.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.CSimpleMain">
+   <children>
+      <Button fx:id="btnDownload" layoutX="170.0" layoutY="25.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="download" />
+      <Button fx:id="btnUpload" layoutX="30.0" layoutY="25.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="upload" />
+   </children>
+</AnchorPane>

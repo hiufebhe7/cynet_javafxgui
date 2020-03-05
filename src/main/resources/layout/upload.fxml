@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CUpload">
+    <children>
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" />
+                <ColumnConstraints halignment="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <ChoiceBox fx:id="ckboxConnects" prefWidth="9999.0" GridPane.columnIndex="2" />
+                <Label text="instance:" GridPane.rowIndex="1">
+                    <GridPane.margin>
+                        <Insets left="2.0" right="2.0" />
+                    </GridPane.margin>
+                </Label>
+                <TextField fx:id="tefInstance" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="tefUsername" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField fx:id="tefPassword" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label text="username:" GridPane.rowIndex="2">
+                    <GridPane.margin>
+                        <Insets left="2.0" right="2.0" />
+                    </GridPane.margin>
+                </Label>
+                <Label text="password:" GridPane.rowIndex="3">
+                    <GridPane.margin>
+                        <Insets left="2.0" right="2.0" />
+                    </GridPane.margin>
+                </Label>
+                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+                    <children>
+                        <Button fx:id="btnRemove" mnemonicParsing="false" text="remove">
+                            <HBox.margin>
+                                <Insets right="6.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnUpload" mnemonicParsing="false" text="upload">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            <ProgressIndicator fx:id="prgload" maxHeight="20.0" maxWidth="20.0">
+               <GridPane.margin>
+                  <Insets right="6.0" />
+               </GridPane.margin></ProgressIndicator>
+            <Label text="file:" GridPane.rowIndex="4" />
+            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <children>
+                  <TextField fx:id="textfPath" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btnOpen" maxWidth="-Infinity" mnemonicParsing="false" text="open">
+                     <HBox.margin>
+                        <Insets left="4.0" />
+                     </HBox.margin></Button>
+               </children>
+            </HBox>
+            </children>
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+        </GridPane>
+    </children>
+</VBox>

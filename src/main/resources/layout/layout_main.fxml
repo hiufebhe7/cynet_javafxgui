@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LayoutMain">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="task">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openDownloadDialog" text="new download" />
+                    </items>
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#openUploadDialog" text="new upload" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <ListView fx:id="listView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+        </ListView>
+    </children>
+</VBox>
