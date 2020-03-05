@@ -15,7 +15,7 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LayoutMain : Controller(), Initializable {
+class CMain : Controller(), Initializable {
 
     @FXML
     private lateinit var root: Pane
