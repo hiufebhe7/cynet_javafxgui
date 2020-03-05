@@ -16,7 +16,6 @@ cynet gui是一个基于mastodon的网络类网盘协议的gui版本。
 | [img](https://img.shields.io/badge/language-swift-brightgreen.svg?style=plastic)<br>Windows | [img](https://img.shields.io/badge/language-swift-brightgreen.svg?style=plastic)<br>Linux  | [img](https://img.shields.io/badge/language-swift-brightgreen.svg?style=plastic)<br>Mac Os  |
 | --- | --- | --- | 
 
-![cynet](https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/256.png "cynet")
 # 最后 关于本协议
 
 cynet会持续更新。我会把它当成一个大坑来填。继续完善它的功能。
