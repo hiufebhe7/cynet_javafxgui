@@ -2,6 +2,7 @@ package com.example.demo.utils
 
 import com.google.gson.Gson
 import java.io.File
+import java.nio.file.Paths
 
 class Config private constructor() {
 
@@ -12,6 +13,10 @@ class Config private constructor() {
     val file = File(Const.PATH_FILE_CONFIG)
 
     init {
+        val dir = File(Const.PATH_DIR_CACHE)
+        if (!dir.exists()){
+            dir.mkdir()
+        }
         if (!file.exists()) {
             file.createNewFile()
         }
