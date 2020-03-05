@@ -13,7 +13,7 @@ cynet gui是一个基于mastodon的网络类网盘协议的gui版本。
 基于jvm能够在主流pc平台上使用
 
 
-| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg)  | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg)  |
+| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg) | Linux<br>![img](https://img.shields.io/badge/build-success-orange.svg)  | Mac Os<br>![img](https://img.shields.io/badge/build-success-orange.svg)  |
 | --- | --- | --- | 
 
 # 最后 关于本协议
