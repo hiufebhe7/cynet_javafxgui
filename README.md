@@ -1,16 +1,20 @@
-## 关于 cynet gui
 <p align="center">
   <a href="http://ant.design">
     <img width="200" src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/256.png">
   </a>
 </p>
+
+<h1 align="center">cynet</h1>
+
+<div align="center">
 cynet gui是一个基于mastodon的网络类网盘协议的gui版本。
 扩展了mastodon的 **上传 下载 分享链接** 功能  
 
 基于jvm能够在主流pc平台上使用
 
-Home Page  
-<http://136.244.81.230>
+
+| [img](https://img.shields.io/badge/language-swift-brightgreen.svg?style=plastic)<br>Windows | [img](https://img.shields.io/badge/language-swift-brightgreen.svg?style=plastic)<br>Linux  | [img](https://img.shields.io/badge/language-swift-brightgreen.svg?style=plastic)<br>Mac Os  |
+| --- | --- | --- | 
 
 ![cynet](https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/256.png "cynet")
 # 最后 关于本协议
