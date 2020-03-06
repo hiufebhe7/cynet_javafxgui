@@ -1,5 +1,5 @@
 # cynet 
-一款基于 mastodon **上传 下载 分享 功能的网盘app** 
+一款基于 mastodon **上传 下载 分享 功能的网盘app**  
 <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="256" height="256" align="bottom" />
 ## 示例
 <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/test1.gif" alt="logo" width="800" height="544" />
