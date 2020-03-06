@@ -1,6 +1,6 @@
 # cynet 
 一款基于 mastodon **上传 下载 分享 功能的网盘app**  
-<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="256" height="256" align="bottom" />
+<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="128" height="128" align="bottom" />
 
 ## 基于jvm能够在主流pc平台上使用
 使用javafx+kotlin+tornadofx  
@@ -17,5 +17,5 @@
 3. 更安全，更隐私，更灵活的分享方式。
  
 最后 关于本协议
-cynet会持续更新。我会把它当成一个大坑来填。继续完善它的功能。
-因为 **最美好的回忆，应当给最爱的人 (●’◡’●)**
+cynet会持续更新，作者目前半全职开发。继续完善它的功能。
+**最美好的记忆，给最爱的人(●’◡’●)**
