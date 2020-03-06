@@ -1,7 +1,7 @@
 # 关于cynet  
 <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="256" height="256" align="bottom" />
 
-扩展了mastodon的 **上传 下载 分享链接** 功能
+一个基于 mastodon **上传 下载 分享 功能的网盘app**
 
 目标是一个分布式的免费,更通用广泛的开源网盘  
 比起主流商业网盘cynet有哪些更好的地方  
