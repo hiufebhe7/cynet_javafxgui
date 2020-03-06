@@ -1,5 +1,5 @@
 # 关于cynet  
-![img](https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/256.png) 
+![img](https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg) 
 
 cynet gui是一个基于mastodon的网络类网盘协议的gui版本。
 扩展了mastodon的 **上传 下载 分享链接** 功能
