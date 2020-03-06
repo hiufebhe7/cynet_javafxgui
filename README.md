@@ -1,5 +1,4 @@
 # 关于cynet  
-![img](https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg) 
 <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="256" height="256" align="bottom" />
 
 扩展了mastodon的 **上传 下载 分享链接** 功能
