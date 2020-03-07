@@ -1,6 +1,6 @@
 # cynet 
 一款基于 **mastodon** 上传 下载 分享 功能的网盘app。  
-<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo2.svg" alt="logo" width="128" height="128" align="bottom" />
+<img style="text-shadow:2px 2px 0px #fff" src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo2.svg" alt="logo" width="128" height="128" align="bottom" />
 
 ### 开发依赖 
 * javafx  
