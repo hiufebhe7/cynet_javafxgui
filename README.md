@@ -5,9 +5,9 @@
 </article>
 
 ## 最新版本 0.0.3
-由于国内上传速度十分不稳定，最新版不在提供jre下载，请下载0.0.1版本后覆盖掉jar文件即可。  
+由于国内上传速度十分不稳定，目前移除jar+jre下载。  
 预编译文件为out/artifacts/cynet_javafxgui_jar/*  
-需要下载jre解压到同目录下  
+需要下载当前平台的jre解压到同目录下  
 比如  
 cynet_javafxgui.jar  
 run_linux_mac.bash  
