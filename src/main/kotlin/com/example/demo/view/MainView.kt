@@ -13,6 +13,7 @@ class MainView : View() {
     override val root = layout()
 
     init {
+        primaryStage.isResizable = false
     }
 
     private fun layout(): Pane {

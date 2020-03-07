@@ -13,12 +13,12 @@ import javafx.scene.control.TextArea
 import javafx.scene.control.TextField
 import javafx.scene.layout.Pane
 import javafx.stage.DirectoryChooser
-import javafx.stage.Modality
 import javafx.stage.Stage
 import tornadofx.*
 import java.io.File
 import java.net.URL
 import java.util.*
+import kotlin.concurrent.thread
 
 class CDownload : Controller(), Initializable {
 
@@ -37,7 +37,7 @@ class CDownload : Controller(), Initializable {
     @FXML
     private lateinit var btnCancle: Button
 
-    private lateinit var stage: Stage
+    private var pstage: Stage?=null
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
 
@@ -53,7 +53,7 @@ class CDownload : Controller(), Initializable {
         }
 
         btnCancle.setOnMouseClicked {
-            stage.close()
+            pstage?.close()
         }
 
         btnDownload.setOnMouseClicked {
@@ -66,7 +66,7 @@ class CDownload : Controller(), Initializable {
     }
 
     fun lateinit(stage: Stage) {
-        this.stage = stage
+        this.pstage = stage
     }
 
     fun download() {
@@ -79,10 +79,12 @@ class CDownload : Controller(), Initializable {
         val content = loader.load<Pane>()
         val taskui = loader.getController<CTask>()
 
-        val scene = Scene(stage.pane())
-        scene.root = content
-        stage.scene = scene
-        stage.show()
+        pstage!!.let {
+            val scene = Scene(it.pane())
+            scene.root = content
+            it.scene = scene
+            it.show()
+        }
 
         task.onReadyStart = {
             println("onReadyStart")
@@ -97,20 +99,22 @@ class CDownload : Controller(), Initializable {
             println("onReadyError:${it}")
         }
         task.onReadyComplete = {
-            taskui.start()
+            Platform.runLater {
+                taskui.run()
+            }
         }
         task.onStart = {
             println("onStart")
             val p = task.pipe!!
             Platform.runLater {
                 taskui.sizeAll = p.sizeAll
-                taskui.total = p.size
+                taskui.size = p.size
             }
         }
         task.onUpdate = { total: Int, size: Int, len: Int ->
             println("onUpdate:${total / size.toDouble()}")
             Platform.runLater {
-                taskui.sizeLen += len
+//                taskui.sizeLen += len
                 taskui.progress = total / size.toDouble()
             }
         }
@@ -118,7 +122,7 @@ class CDownload : Controller(), Initializable {
             println("onProgress:${total / size.toDouble()}")
             Platform.runLater {
                 taskui.sizeAll = size
-                taskui.total = total
+                taskui.size = total
             }
         }
         task.onError = {
@@ -129,10 +133,16 @@ class CDownload : Controller(), Initializable {
                 taskui.playDing()
             }
         }
-        taskui.lateInit(task)
-        taskui.free()
-        taskui.decode()
-
+        task.onExit = {
+            Platform.runLater {
+                taskui.active(true)
+            }
+        }
+        taskui.lateInit(task,pstage)
+        taskui.stop()
+        thread {
+            taskui.decode()
+        }
     }
 
 }

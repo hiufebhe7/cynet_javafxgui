@@ -16,6 +16,7 @@ import javafx.stage.Modality
 import javafx.stage.Stage
 import tornadofx.*
 import java.net.URL
+import java.nio.file.Paths
 import java.util.*
 
 class CTask : Controller(), Initializable {
@@ -40,6 +41,8 @@ class CTask : Controller(), Initializable {
     private lateinit var btnSetting: Button
 
     private var task: Task? = null
+
+    private var pstage: Stage? = null
 
     var progress: Double
         get() = prgItor.progress
@@ -69,7 +72,7 @@ class CTask : Controller(), Initializable {
             lbSize.text = str
         }
 
-    var total: Int = 0
+    var size: Int = 0
         set(value) {
             field = value
             var unitx = "b"
@@ -120,7 +123,7 @@ class CTask : Controller(), Initializable {
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
 
-//        size = 512000000
+//        sizeAll = 512000000
 //        speed = 512
 //        total = 512
 //        progress = .5
@@ -129,8 +132,7 @@ class CTask : Controller(), Initializable {
 
         tgbRun.setOnMouseClicked {
             if (tgbRun.isSelected) {
-//                playDing()
-                start()
+                run()
             } else {
                 stop()
             }
@@ -149,10 +151,9 @@ class CTask : Controller(), Initializable {
             task?.let {
                 when (it.pipe) {
                     is Upload -> {
-                        val datau = it.pipe as Upload
-                        if (!datau.cynet.equals("")) {
+                        if (!it.pipe.cynet.equals("")) {
                             val txaCynet = TextArea()
-                            txaCynet.text = datau.cynet
+                            txaCynet.text = it.pipe.cynet
                             txaCynet.isWrapText = true
                             txaCynet.maxWidth = Double.MAX_VALUE
                             vBox.add(txaCynet)
@@ -174,8 +175,9 @@ class CTask : Controller(), Initializable {
 
     }
 
-    fun lateInit(task: Task) {
+    fun lateInit(task: Task,stage: Stage?) {
         this.task = task
+        this.pstage = stage
         active(true)
 
         val pipe = task.pipe!!
@@ -183,26 +185,15 @@ class CTask : Controller(), Initializable {
             is Upload -> type = "U"
             is Download -> type = "D"
         }
-        path = pipe.path + pipe.filename
+        path = Paths.get(pipe.path , pipe.filename).toFile().absolutePath
     }
 
-    fun start() {
+    fun run() {
         tgbRun.text = "run"
         tgbRun.isSelected = true
         task?.run()
         active(true)
     }
-
-    fun decode() {
-        task?.decodeCynet()
-    }
-//
-//    fun download() {
-//        tgbRun.text = "run"
-//        tgbRun.isSelected = true
-//        task?.run()
-//        active(true)
-//    }
 
     fun stop() {
         tgbRun.text = "stop"
@@ -210,15 +201,20 @@ class CTask : Controller(), Initializable {
         active(false)
     }
 
-    fun free() {
-        stop()
-        active(false)
-    }
-
     fun destroy() {
         root.removeFromParent()
+        pstage?.close()
         task?.destroy()
     }
+
+    fun decode() {
+        task?.decodeCynet()
+    }
+
+//    fun free() {
+//        stop()
+//        active(false)
+//    }
 
     fun playDing() {
         val resource = javaClass.getResource("/audio/ding.mp3").toExternalForm()

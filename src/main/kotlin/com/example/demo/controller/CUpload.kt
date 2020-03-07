@@ -168,13 +168,13 @@ class CUpload : Controller(), Initializable {
             val p = task.pipe!!
             Platform.runLater {
                 taskui.sizeAll = p.sizeAll
-                taskui.total = p.size
+                taskui.size = p.size
             }
         }
         task.onReadyUpdate = { total: Int, size: Int, len: Int ->
             println("onReadySend:${total / size.toDouble()}")
             Platform.runLater {
-                taskui.sizeLen += len
+//                taskui.sizeLen += len
                 taskui.progress = total / size.toDouble()
             }
         }
@@ -182,7 +182,7 @@ class CUpload : Controller(), Initializable {
             println("onReadyProgress:${total / size.toDouble()}")
             Platform.runLater {
                 taskui.sizeAll = size
-                taskui.total = total
+                taskui.size = total
             }
         }
         task.onReadyError = {
@@ -217,14 +217,12 @@ class CUpload : Controller(), Initializable {
         api.onToken = {
             //            println(it)
             Platform.runLater {
-                taskui.start()
+                taskui.run()
             }
         }
         api.onError = {
 
         }
-        taskui.lateInit(task)
-        taskui.free()
 
         val stage = Stage()
         val scene = Scene(stage.pane())
@@ -232,6 +230,9 @@ class CUpload : Controller(), Initializable {
         stage.scene = scene
         stage.initModality(Modality.WINDOW_MODAL)
         stage.show()
+
+        taskui.lateInit(task,stage)
+        taskui.stop()
     }
 
 }

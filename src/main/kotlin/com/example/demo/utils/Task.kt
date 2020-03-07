@@ -82,7 +82,7 @@ class Task {
 
     var onExit = { code: Int -> }
 
-    private lateinit var fileTmp: File
+    var fileTmp: File? = null
 
     private var free = false
 
@@ -124,6 +124,7 @@ class Task {
 
     fun destroy() {
         free = true
+        fileTmp?.delete()
         stop()
     }
 
@@ -137,16 +138,18 @@ class Task {
         val strFileName = base64Name.toString(Charset.forName("ascii"))
 
         fileTmp = File(Paths.get(Const.PATH_DIR_CACHE, "u.$strFileName.json").toFile().path)
-        if (fileTmp.exists()) {
-            val input = fileTmp.inputStream()
-            val bytesGson = input.readBytes()
-            val gu = Gson().fromJson(bytesGson.toString(Charset.forName("ascii")), Upload::class.java)
-            gu?.let {
-                pipe.sizeAll = gu.sizeAll
-                pipe.size = gu.size
-                pipe.seek = gu.seek
-                pipe.urls.addAll(gu.urls)
-                pipe.cynet = gu.cynet
+        fileTmp!!.let {
+            if (it.exists()) {
+                val input = it.inputStream()
+                val bytesGson = input.readBytes()
+                val gu = Gson().fromJson(bytesGson.toString(Charset.forName("ascii")), Upload::class.java)
+                gu?.let {
+                    pipe.sizeAll = gu.sizeAll
+                    pipe.size = gu.size
+                    pipe.seek = gu.seek
+                    pipe.urls.addAll(gu.urls)
+                    pipe.cynet = gu.cynet
+                }
             }
         }
 
@@ -174,7 +177,6 @@ class Task {
             }
 
             val bytesPart = bytesNull + bytesSource.copyOfRange(0, sizeRead)
-//            val requestBody = RequestBody.create(MediaType.parse(Const.PACK_MEDIATYPE), bytesPart)
             val streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesPart)
             streamRequest.onSend = onReadyUpdate
             val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest)
@@ -211,11 +213,11 @@ class Task {
             }
 
             val gson = Gson().toJson(datau)
-            val outTmp = fileTmp.outputStream()
+            val outTmp = fileTmp!!.outputStream()
             outTmp.write(gson.toByteArray())
             outTmp.flush()
         }
-        onExit(0)
+        onExit(1)
     }
 
     private fun encodeCynet() {
@@ -273,7 +275,7 @@ class Task {
         datau.cynet = str
 
         val gson = Gson().toJson(datau)
-        val outTmp = fileTmp.outputStream()
+        val outTmp = fileTmp!!.outputStream()
         outTmp.write(gson.toByteArray())
         outTmp.flush()
         outTmp.close()
@@ -363,19 +365,22 @@ class Task {
 
         val base64Path = Base64.getEncoder().encode(filePath.toByteArray())
         val strFileName = base64Path.toString(Charset.forName("ascii"))
+//        fileTmp = File(Paths.get(Const.PATH_DIR_CACHE, "d.a.json").toFile().path)
         fileTmp = File(Paths.get(Const.PATH_DIR_CACHE, "d.$strFileName.json").toFile().path)
-        if (fileTmp.exists()) {
-            val input = fileTmp.inputStream()
-            val bytesGson = input.readBytes()
-            val od = Gson().fromJson(bytesGson.toString(Charset.forName("ascii")), Download::class.java)
-            od?.let {
-                pipe.filename = od.filename
-                pipe.path = od.path
-                pipe.sizeAll = od.sizeAll
-                pipe.size = od.size
-                pipe.seek = od.seek
-                pipe.urls.clear()
-                pipe.urls.addAll(od.urls)
+        fileTmp!!.let {
+            if (it.exists()) {
+                val input = it.inputStream()
+                val bytesGson = input.readBytes()
+                val od = Gson().fromJson(bytesGson.toString(Charset.forName("ascii")), Download::class.java)
+                od?.let {
+                    pipe.filename = od.filename
+                    pipe.path = od.path
+                    pipe.sizeAll = od.sizeAll
+                    pipe.size = od.size
+                    pipe.seek = od.seek
+                    pipe.urls.clear()
+                    pipe.urls.addAll(od.urls)
+                }
             }
         }
 
@@ -428,7 +433,7 @@ class Task {
                 onProgress(pd.size, pd.sizeAll)
 
                 val gson = Gson().toJson(pd)
-                val outputTmp = fileTmp.outputStream()
+                val outputTmp = fileTmp!!.outputStream()
                 outputTmp.write(gson.toByteArray())
                 outputTmp.flush()
                 outputTmp.close()
@@ -437,7 +442,11 @@ class Task {
         }
         outputDownload.close()
 //        println("download over")
-        onComplete(null)
+        if(pd.sizeAll == pd.size){
+            onComplete(null)
+        }else{
+            onExit(1)
+        }
     }
 
     fun tWrite(bytes: ByteArray, seek: Int) {
