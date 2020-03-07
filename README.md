@@ -1,10 +1,3 @@
-<style>
-	.logo {
-		border-style:solid; 
-		border-width:1px; 
-		border-color:#000
-	}
-</style>
 # cynet 
 一款基于 **mastodon** 上传 下载 分享 功能的网盘app。  
 
