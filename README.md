@@ -16,9 +16,7 @@
 * tornadofx  
 
 ### release进度
-| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) 
-| Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux)  
-| Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple)  |
+| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux)  | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple)  |
 | --- | --- | --- | 
 
 
