@@ -2,10 +2,15 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="root" prefHeight="100.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="layout.CSimpleMain">
    <children>
-      <Button fx:id="btnDownload" layoutX="170.0" layoutY="25.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="download" />
       <Button fx:id="btnUpload" layoutX="30.0" layoutY="25.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="upload" />
+      <Button fx:id="btnDownload" layoutX="170" layoutY="25.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="download" />
+      <Label fx:id="lbVer" layoutX="244.0" layoutY="81.0" text="v.0.0.0" textFill="#b2b2b2">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
    </children>
 </AnchorPane>

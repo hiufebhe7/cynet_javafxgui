@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
 import javafx.scene.Scene
 import javafx.scene.control.Button
+import javafx.scene.control.Label
 import javafx.scene.layout.Pane
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
@@ -26,6 +27,8 @@ class CSimpleMain : Controller(), Initializable {
     private lateinit var btnDownload: Button
     @FXML
     private lateinit var btnUpload: Button
+    @FXML
+    private lateinit var lbVer: Label
 
     init {
         Config.single.load()
@@ -69,6 +72,8 @@ class CSimpleMain : Controller(), Initializable {
             stage.scene = scene
             stage.show()
         }
+
+        lbVer.text = "v:${Const.VERSION}"
 
 //        testUoload()
 //        testDownload()
