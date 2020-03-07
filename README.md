@@ -4,7 +4,7 @@
 	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
 
-## 最新版本 0.0.2
+## 最新版本 0.0.3
 由于国内上传速度十分不稳定，最新版不在提供jre下载，请下载0.0.1版本后覆盖掉jar文件即可。
 
 ## 使用注意

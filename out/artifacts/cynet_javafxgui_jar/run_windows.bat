@@ -1,0 +1,1 @@
+.\jre1.8.0_241\bin\java.exe -jar .\cynet_javafxgui.jar
