@@ -1,9 +1,11 @@
 # cynet 
 一款基于 **mastodon** 上传 下载 分享 功能的网盘app。  
-## 最新版本 0.0.2
 <article class="logo">
 	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
+
+## 最新版本 0.0.2
+由于国内上传速度十分不稳定，最新版不在提供jre下载，请下载0.0.1版本后覆盖掉jar文件即可。
 
 ### 开发依赖 
 * javafx  
@@ -14,8 +16,6 @@
 | Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-orange.svg?logo=linux)  | Mac Os<br>![img](https://img.shields.io/badge/build-success-orange.svg?logo=apple)  |
 | --- | --- | --- | 
 
-## 示例
-<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/test1.gif" alt="logo" width="800" height="544" />
 
 ## 目标是一个分布式的免费,更通用广泛的开源网盘  
 比起主流商业网盘cynet有哪些更好的地方  
