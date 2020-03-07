@@ -1,6 +1,6 @@
 # cynet 
 一款基于 **mastodon** 上传 下载 分享 功能的网盘app。  
-
+## 最新版本 0.0.2
 <article class="logo">
 	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
