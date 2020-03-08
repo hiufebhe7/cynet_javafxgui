@@ -17,6 +17,7 @@ import javafx.stage.Stage
 import tornadofx.*
 import java.io.File
 import java.net.URL
+import java.nio.file.Paths
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -109,6 +110,7 @@ class CDownload : Controller(), Initializable {
             Platform.runLater {
                 taskui.sizeAll = p.sizeAll
                 taskui.size = p.size
+                taskui.path = Paths.get(p.path , p.filename).toFile().absolutePath
             }
         }
         task.onUpdate = { total: Int, size: Int, len: Int ->

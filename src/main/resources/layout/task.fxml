@@ -29,9 +29,9 @@
                <children>
                   <GridPane>
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="0.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="0.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="300.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="60.0" prefWidth="0.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="60.0" prefWidth="0.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -43,7 +43,7 @@
                            </children>
                         </HBox>
                         <Label fx:id="lbFile" prefHeight="10.0" text="file.zip" />
-                        <ToggleButton fx:id="tgbRun" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="r" GridPane.columnIndex="1" />
+                        <ToggleButton fx:id="tgbRun" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="stop" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                   <ProgressBar fx:id="prgItor" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="0.0" progress="0.0" GridPane.rowIndex="1">

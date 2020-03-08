@@ -85,6 +85,8 @@ class Task {
     var fileTmp: File? = null
 
     private var free = false
+    private var clear = false
+    private var streamRequest: StreamRequestBody? = null
 
     var cyPack: CyPack? = null
         set
@@ -124,7 +126,9 @@ class Task {
 
     fun destroy() {
         free = true
-        fileTmp?.delete()
+        clear = true
+        streamRequest?.runing = false
+//        fileTmp?.delete()
         stop()
     }
 
@@ -177,9 +181,9 @@ class Task {
             }
 
             val bytesPart = bytesNull + bytesSource.copyOfRange(0, sizeRead)
-            val streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesPart)
-            streamRequest.onSend = onReadyUpdate
-            val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest)
+            streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesPart)
+            streamRequest!!.onSend = onReadyUpdate
+            val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest!!)
 
             while (true) {
 
@@ -216,6 +220,10 @@ class Task {
             val outTmp = fileTmp!!.outputStream()
             outTmp.write(gson.toByteArray())
             outTmp.flush()
+
+            if (clear){
+                fileTmp?.delete()
+            }
         }
         onExit(1)
     }
@@ -246,9 +254,9 @@ class Task {
         val bytesNullPart = bytesNull + bytesPart
 
 //        val requestBody = RequestBody.create(MediaType.parse(Const.PACK_MEDIATYPE), bytesNullPart)
-        val streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesNullPart)
-        streamRequest.onSend = onUpdate
-        val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest)
+        streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesNullPart)
+        streamRequest!!.onSend = onUpdate
+        val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest!!)
 
         var media: Media
         var retry = 0
@@ -279,6 +287,10 @@ class Task {
         outTmp.write(gson.toByteArray())
         outTmp.flush()
         outTmp.close()
+
+        if (clear){
+            fileTmp?.delete()
+        }
 
         onComplete(str)
     }
@@ -412,6 +424,9 @@ class Task {
                 var contentLength = 0
                 val bufferNullPack = Buffer()
                 while (input.read(buffer).also({ len = it }) != -1) {
+                    if (!runing) {
+                        break
+                    }
                     if (first) {
                         first = false
                         contentLength = body.contentLength().toInt()
@@ -426,25 +441,30 @@ class Task {
             } catch (e: Exception) {
                 onError(e.toString())
             }
-            dataPack?.let {
-                outputDownload.write(dataPack)
-                outputDownload.flush()
-                pd.size += dataPack.size
-                onProgress(pd.size, pd.sizeAll)
+            if (runing) {
+                dataPack?.let {
+                    outputDownload.write(dataPack)
+                    outputDownload.flush()
+                    pd.size += dataPack.size
+                    onProgress(pd.size, pd.sizeAll)
 
-                val gson = Gson().toJson(pd)
-                val outputTmp = fileTmp!!.outputStream()
-                outputTmp.write(gson.toByteArray())
-                outputTmp.flush()
-                outputTmp.close()
+                    val gson = Gson().toJson(pd)
+                    val outputTmp = fileTmp!!.outputStream()
+                    outputTmp.write(gson.toByteArray())
+                    outputTmp.flush()
+                    outputTmp.close()
+                }
             }
 //            println("download ${url},${progress}")
         }
         outputDownload.close()
+        if (clear) {
+            fileTmp?.delete()
+        }
 //        println("download over")
-        if(pd.sizeAll == pd.size){
+        if (pd.sizeAll == pd.size) {
             onComplete(null)
-        }else{
+        } else {
             onExit(1)
         }
     }

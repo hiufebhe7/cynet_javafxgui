@@ -11,6 +11,7 @@ class StreamRequestBody : RequestBody {
     var buffer: ByteArray
     var mediaType: MediaType?
     var onSend = { total: Int, size: Int, len: Int -> }
+    var runing = true
 
     constructor(type: MediaType?, bytes: ByteArray) {
         this.buffer = bytes
@@ -32,6 +33,9 @@ class StreamRequestBody : RequestBody {
             var total = 0L
             var read = 0L
             while (source.read(sink.buffer(), 1024).also({ read = it }) != -1L) {
+                if (!runing){
+                    return
+                }
                 total += read
                 sink.flush()
                 onSend(total.toInt(), buffer.size, read.toInt())
