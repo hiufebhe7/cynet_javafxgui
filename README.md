@@ -9,6 +9,7 @@
 预编译文件为out/artifacts/cynet_javafxgui_jar/*  
 需要下载当前平台的jre解压到同目录下  
 比如  
+
 cynet_javafxgui.jar  
 run_linux_mac.bash  
 run_windows.bat  
