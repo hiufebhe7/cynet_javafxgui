@@ -4,6 +4,13 @@
 	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo3.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
 
+### 开发依赖 
+* javafx  
+* kotlin  
+* tornadofx  
+### 运行依赖
+jre8+
+
 ## 最新版本 0.0.5
 **下载和使用方式**  
 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
@@ -19,12 +26,6 @@ jre8.xxx (jre运行时，cynet基于jdk8+开发)
 ## 使用注意
 1. 上传的文件不要使用过长的文件命名，不然会发生错误。最好使用简单的英文命名。不然有时候会发生文件读写错误。原因是在缓存读写编码时被编码的文件名会过长超出当前系统最长文件名限制。
 2. 注意跨平台运行脚本里面的jre指向目录和jre文件目录命名保持一致
-### 开发依赖 
-* javafx  
-* kotlin  
-* tornadofx  
-### 运行依赖
-jre8+
 
 ### release进度
 | Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux)  | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple)  |
