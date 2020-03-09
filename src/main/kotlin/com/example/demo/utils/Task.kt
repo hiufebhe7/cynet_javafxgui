@@ -469,7 +469,7 @@ class Task {
                     bufferNullPack.write(buffer.copyOfRange(0, len))
                     onUpdate(size, sizeAll, len)
                 }
-                if (size == sizeAll) {
+                if (size == sizeAll && size != 0) {
                     val dataNullPack = bufferNullPack.readByteArray()
                     dataPack = dataNullPack.copyOfRange(bytesNull.size, dataNullPack.size)
                     outputDownload.write(dataPack)
@@ -496,7 +496,6 @@ class Task {
         outputDownload.close()
         if (runing) {
             callExit(0)
-
             runing = false
             onComplete(null)
         } else {
