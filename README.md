@@ -32,7 +32,7 @@ config 配置信息，下载任务缓存
 cynet_javafxgui.jar 主程序文件，版本更新直接下载替换掉即可  
 run_linux_mac.bash 跨平台运行脚本  
 run_windows.bat 跨平台运行脚本  
-jre8.xxx (jre运行时，cynet基于jdk8+开发)  
+jre1.8.0_241 (jre运行时，cynet基于jre1.8.0_241开发)  
 
 ## 使用注意
 
