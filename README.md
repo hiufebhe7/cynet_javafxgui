@@ -22,10 +22,8 @@
 ## 最新版本 0.0.6
 
 1. 下载[jre8.241运行时](https://github.com/hiufebhe7/cynet_javafxgui/releases/tag/0.0.0)  
-   
-   2. 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件  
-      
-      3. 解压前平台的jre到目录下  
+2. 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件  
+3. 解压前平台的jre到目录下  
 
 **app目录各文件解释**  
 cache 下载任务缓存    
