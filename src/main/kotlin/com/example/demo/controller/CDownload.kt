@@ -96,7 +96,7 @@ class CDownload : Controller(), Initializable {
         task.onReadyProgress = { total: Int, size: Int ->
             println("onReadyProgress:${total / size.toDouble()}")
         }
-        task.onReadyError = {
+        task.onReadyMessage = {
             println("onReadyError:${it}")
         }
         task.onReadyComplete = {
@@ -120,14 +120,14 @@ class CDownload : Controller(), Initializable {
                 taskui.progress = total / size.toDouble()
             }
         }
-        task.onProgress = { total: Int, size: Int ->
-            println("onProgress:${total / size.toDouble()}")
+        task.onProgress = { size: Int, sizeAll: Int ->
+            println("onProgress:${size / sizeAll.toDouble()}")
             Platform.runLater {
-                taskui.sizeAll = size
-                taskui.size = total
+                taskui.sizeAll = sizeAll
+                taskui.size = size
             }
         }
-        task.onError = {
+        task.onMessage = {
             println("onError:${it}")
         }
         task.onComplete = {
@@ -139,6 +139,7 @@ class CDownload : Controller(), Initializable {
             Platform.runLater {
                 taskui.active(true)
             }
+            println("exit code $it")
         }
         taskui.lateInit(task,pstage)
         taskui.stop()

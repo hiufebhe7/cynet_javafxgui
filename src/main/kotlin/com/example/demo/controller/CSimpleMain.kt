@@ -3,7 +3,6 @@ package layout
 import com.example.demo.net.API
 import com.example.demo.utils.*
 import controller.CUpload
-import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
@@ -117,7 +116,7 @@ class CSimpleMain : Controller(), Initializable {
             task.onReadyProgress = { total: Int, size: Int ->
                 println("onReadyProgress:${total / size.toDouble()}")
             }
-            task.onReadyError = {
+            task.onReadyMessage = {
                 println("onReadyError:${it}")
             }
             task.onReadyComplete = {
@@ -132,7 +131,7 @@ class CSimpleMain : Controller(), Initializable {
             task.onProgress = { total: Int, size: Int ->
                 println("onProgress:${total / size.toDouble()}")
             }
-            task.onError = {
+            task.onMessage = {
                 println("onError:${it}")
             }
             task.onComplete = {
@@ -157,7 +156,7 @@ class CSimpleMain : Controller(), Initializable {
         task.onReadyProgress = { total: Int, size: Int ->
             println("onReadyProgress:${total / size.toDouble()}")
         }
-        task.onReadyError = {
+        task.onReadyMessage = {
             println("onReadyError:${it}")
         }
         task.onReadyComplete = {
@@ -172,7 +171,7 @@ class CSimpleMain : Controller(), Initializable {
         task.onProgress = { total: Int, size: Int ->
             println("onProgress:${total / size.toDouble()}")
         }
-        task.onError = {
+        task.onMessage = {
             println("onError:${it}")
         }
         task.onComplete = {

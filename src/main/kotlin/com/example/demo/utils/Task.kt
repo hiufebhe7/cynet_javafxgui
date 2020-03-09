@@ -72,20 +72,24 @@ class Task {
     var onReadyUpdate = { total: Int, size: Int, len: Int -> }
     var onReadyProgress = { total: Int, size: Int -> }
     var onReadyComplete = { msg: String? -> }
-    var onReadyError = { msg: String -> }
+    var onReadyMessage = { msg: String -> }
 
     var onStart = { }
     var onUpdate = { total: Int, size: Int, len: Int -> }
     var onProgress = { total: Int, size: Int -> }
     var onComplete = { msg: String? -> }
-    var onError = { msg: String -> }
+    var onMessage = { msg: String -> }
 
+    //    var onRun = { }
+//    var onStop = { }
+//    var onDestroy = { }
     var onExit = { code: Int -> }
 
-    var fileTmp: File? = null
+    private var fileTmp: File? = null
 
-    private var free = false
-    private var clear = false
+    private var endPoint = true
+    private var complete = false
+
     private var streamRequest: StreamRequestBody? = null
 
     var cyPack: CyPack? = null
@@ -109,27 +113,30 @@ class Task {
     }
 
     fun run() {
-        if (!runing && !free) {
+        if (!runing && endPoint) {
             runing = true
+            endPoint = false
             thread = thread {
                 when (pipe) {
                     is Upload -> upload()
                     is Download -> download()
                 }
             }
+            println("task run")
         }
     }
 
     fun stop() {
         runing = false
+        println("task stop")
+        if (endPoint) {
+            callExit(0)
+        }
     }
 
     fun destroy() {
-        free = true
-        clear = true
-        streamRequest?.runing = false
-//        fileTmp?.delete()
-        stop()
+        fileTmp?.delete()
+        println("task destroy")
     }
 
     private fun upload() {
@@ -151,6 +158,7 @@ class Task {
                     pipe.sizeAll = gu.sizeAll
                     pipe.size = gu.size
                     pipe.seek = gu.seek
+                    pipe.urls.clear()
                     pipe.urls.addAll(gu.urls)
                     pipe.cynet = gu.cynet
                 }
@@ -166,13 +174,10 @@ class Task {
 
         onReadyStart()
         while (runing) {
-            var retry = 0
 
             sizeRead = inputSource.read(bytesSource)
             if (sizeRead == -1) {
-                onReadyComplete(null)
-                encodeCynet()
-                return
+                break
             }
 
             seekRead++
@@ -181,21 +186,20 @@ class Task {
             }
 
             val bytesPart = bytesNull + bytesSource.copyOfRange(0, sizeRead)
-            streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesPart)
+            streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE)!!, bytesPart, this)
             streamRequest!!.onSend = onReadyUpdate
             val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest!!)
 
+            var retry = 0
             while (true) {
 
                 if (retry > maxRetry) {
                     runing = false
-                    onReadyError("retry out")
-                    return
+                    break
                 }
                 retry++
 
                 try {
-
                     val response = api!!.mastodon
                             .uploadMedia(multipart)
                             .execute()
@@ -207,25 +211,31 @@ class Task {
                     datau.size += sizeRead
 
                     onReadyProgress(datau.size, datau.sizeAll)
-
                     break
-
                 } catch (e: Exception) {
-                    onReadyError("upload file error,retry $retry")
-                    continue
+                    if (runing) {
+                        onReadyMessage("upload file error,retry $retry")
+                        continue
+                    } else {
+                        break
+                    }
                 }
             }
 
-            val gson = Gson().toJson(datau)
-            val outTmp = fileTmp!!.outputStream()
-            outTmp.write(gson.toByteArray())
-            outTmp.flush()
-
-            if (clear){
-                fileTmp?.delete()
-            }
         }
-        onExit(1)
+
+        val gson = Gson().toJson(datau)
+        val outTmp = fileTmp!!.outputStream()
+        outTmp.write(gson.toByteArray())
+        outTmp.flush()
+        outTmp.close()
+
+        if (runing) {
+            onReadyComplete(null)
+            encodeCynet()
+        } else {
+            callExit(0x01)
+        }
     }
 
     private fun encodeCynet() {
@@ -234,6 +244,7 @@ class Task {
 
         if (!datau.cynet.equals("")) {
             onComplete(datau.cynet)
+            callExit(0)
             return
         }
 
@@ -254,14 +265,20 @@ class Task {
         val bytesNullPart = bytesNull + bytesPart
 
 //        val requestBody = RequestBody.create(MediaType.parse(Const.PACK_MEDIATYPE), bytesNullPart)
-        streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE), bytesNullPart)
+        streamRequest = StreamRequestBody(MediaType.parse(Const.PACK_MEDIATYPE)!!, bytesNullPart, this)
         streamRequest!!.onSend = onUpdate
         val multipart = MultipartBody.Part.createFormData(Const.PACK_NAME, Const.PACK_FILENAME, streamRequest!!)
 
-        var media: Media
+        var media: Media? = null
         var retry = 0
-        while (true) {
+        while (runing) {
+
+            if (retry > maxRetry) {
+                runing = false
+                break
+            }
             retry++
+
             try {
                 val request = api!!.mastodon
                         .uploadMedia(multipart)
@@ -270,15 +287,19 @@ class Task {
                 onProgress(bytesPart.size, bytesPart.size)
                 break
             } catch (e: Exception) {
-                onError("upload pack error,retry $retry")
+                onReadyMessage("upload pack error,retry $retry")
                 continue
             }
         }
 
-        val strBase64 = Base64.getEncoder().encode(media.url.toByteArray())
+        if (!runing) {
+            fileTmp!!.outputStream().close()
+            callExit(0x02)
+        }
+
+        val strBase64 = Base64.getEncoder().encode(media!!.url.toByteArray())
                 .toString(Charset.forName("ascii"))
 
-//        val str = "cynet:?p=https:v=${Const.VERSION}:i=${datau.connect.instance}:f=${datau.filename}:u=${strBase64}"
         val str = "${Const.APP_NAME}:?v=${Const.VERSION}:i=${datau.connect.instance}:u=${strBase64}"
         datau.cynet = str
 
@@ -288,14 +309,13 @@ class Task {
         outTmp.flush()
         outTmp.close()
 
-        if (clear){
-            fileTmp?.delete()
-        }
-
         onComplete(str)
+        runing = false
+        callExit(0)
     }
 
     fun decodeCynet() {
+
         onReadyStart()
 
         val pipe = pipe as Download
@@ -342,11 +362,15 @@ class Task {
                 onReadyProgress(dataPack.size, dataPack.size)
                 break
             } catch (e: Exception) {
-                onReadyError(e.toString())
+                onReadyMessage(e.toString())
             }
         }
 
-        dataPack!!
+        if (dataPack!!.size <= 0) {
+            callExit(0x03)
+            return
+        }
+
         val buffer = Buffer()
         val input = buffer.inputStream()
         val output = buffer.outputStream()
@@ -360,7 +384,7 @@ class Task {
         gzipSource.close()
         cyPack = Gson().fromJson(strCypack, CyPack::class.java)
         cyPack!!.let {
-            if (pipe.filename == "") {
+            if (pipe.filename.equals("")) {
                 pipe.filename = it.filename
             }
             pipe.sizeAll = it.sizeAll
@@ -377,7 +401,6 @@ class Task {
 
         val base64Path = Base64.getEncoder().encode(filePath.toByteArray())
         val strFileName = base64Path.toString(Charset.forName("ascii"))
-//        fileTmp = File(Paths.get(Const.PATH_DIR_CACHE, "d.a.json").toFile().path)
         fileTmp = File(Paths.get(Const.PATH_DIR_CACHE, "d.$strFileName.json").toFile().path)
         fileTmp!!.let {
             if (it.exists()) {
@@ -400,7 +423,18 @@ class Task {
         val outputDownload = FileOutputStream(fileDownload, true)
 
         onStart()
-        while (runing && ++pd.seek < pd.urls.size) {
+        var retry = 0
+        while (runing) {
+
+            if (retry > maxRetry) {
+                runing = false
+                break
+            }
+            retry++
+
+            if (++pd.seek >= pd.urls.size) {
+                break
+            }
 
             val url = pd.urls[pd.seek]
 
@@ -420,8 +454,8 @@ class Task {
                 val input = body.byteStream()
                 var first = true
                 var len = 0
-                var total = 0
-                var contentLength = 0
+                var size = 0
+                var sizeAll = 0
                 val bufferNullPack = Buffer()
                 while (input.read(buffer).also({ len = it }) != -1) {
                     if (!runing) {
@@ -429,44 +463,50 @@ class Task {
                     }
                     if (first) {
                         first = false
-                        contentLength = body.contentLength().toInt()
+                        sizeAll = body.contentLength().toInt()
                     }
-                    total += len
+                    size += len
                     bufferNullPack.write(buffer.copyOfRange(0, len))
-                    onUpdate(total, contentLength, len)
+                    onUpdate(size, sizeAll, len)
                 }
-                val dataNullPack = bufferNullPack.readByteArray()
-                dataPack = dataNullPack.copyOfRange(bytesNull.size, dataNullPack.size)
-
-            } catch (e: Exception) {
-                onError(e.toString())
-            }
-            if (runing) {
-                dataPack?.let {
+                if (size == sizeAll) {
+                    val dataNullPack = bufferNullPack.readByteArray()
+                    dataPack = dataNullPack.copyOfRange(bytesNull.size, dataNullPack.size)
                     outputDownload.write(dataPack)
                     outputDownload.flush()
                     pd.size += dataPack.size
                     onProgress(pd.size, pd.sizeAll)
-
-                    val gson = Gson().toJson(pd)
-                    val outputTmp = fileTmp!!.outputStream()
-                    outputTmp.write(gson.toByteArray())
-                    outputTmp.flush()
-                    outputTmp.close()
+                } else {
+                    pd.seek--
+                }
+            } catch (e: Exception) {
+                if (runing) {
+                    onMessage(e.toString())
+                } else {
+                    break
                 }
             }
-//            println("download ${url},${progress}")
-        }
-        outputDownload.close()
-        if (clear) {
-            fileTmp?.delete()
         }
 //        println("download over")
-        if (pd.sizeAll == pd.size) {
+        val gson = Gson().toJson(pd)
+        val outputTmp = fileTmp!!.outputStream()
+        outputTmp.write(gson.toByteArray())
+        outputTmp.flush()
+        outputTmp.close()
+        outputDownload.close()
+        if (runing) {
+            callExit(0)
+            runing = false
             onComplete(null)
         } else {
-            onExit(1)
+            callExit(0x04)
         }
+    }
+
+    fun callExit(code: Int) {
+        endPoint = true
+        onExit(code)
+//        println(code)
     }
 
     fun tWrite(bytes: ByteArray, seek: Int) {

@@ -225,6 +225,6 @@ class CTask : Controller(), Initializable {
 
     fun active(b: Boolean) {
         tgbRun.isDisable = !b
-//        btnSetting.isDisable = b
+        btnSetting.isDisable = !b
     }
 }

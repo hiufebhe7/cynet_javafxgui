@@ -1,4 +1,4 @@
-import javafx.application.Platform
+import com.example.demo.utils.Task
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okio.BufferedSink
@@ -8,14 +8,15 @@ import okio.Source
 
 class StreamRequestBody : RequestBody {
 
-    var buffer: ByteArray
-    var mediaType: MediaType?
+    val buffer: ByteArray
+    val mediaType: MediaType
     var onSend = { total: Int, size: Int, len: Int -> }
-    var runing = true
+    val task: Task
 
-    constructor(type: MediaType?, bytes: ByteArray) {
+    constructor(type: MediaType, bytes: ByteArray,task: Task) {
         this.buffer = bytes
         this.mediaType = type
+        this.task = task
     }
 
     override fun contentLength(): Long {
@@ -33,8 +34,8 @@ class StreamRequestBody : RequestBody {
             var total = 0L
             var read = 0L
             while (source.read(sink.buffer(), 1024).also({ read = it }) != -1L) {
-                if (!runing){
-                    return
+                if (!task.runing){
+                    break
                 }
                 total += read
                 sink.flush()

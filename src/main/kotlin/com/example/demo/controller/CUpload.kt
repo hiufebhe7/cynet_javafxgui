@@ -185,7 +185,7 @@ class CUpload : Controller(), Initializable {
                 taskui.size = total
             }
         }
-        task.onReadyError = {
+        task.onReadyMessage = {
             println("onReadyError:${it}")
         }
         task.onReadyComplete = {
@@ -200,7 +200,7 @@ class CUpload : Controller(), Initializable {
         task.onProgress = { total: Int, size: Int ->
             println("onProgress:${total / size.toDouble()}")
         }
-        task.onError = {
+        task.onMessage = {
             println("onError:${it}")
         }
         task.onComplete = {
@@ -213,6 +213,7 @@ class CUpload : Controller(), Initializable {
             Platform.runLater {
                 taskui.active(true)
             }
+            println("exit code $it")
         }
         api.onToken = {
             //            println(it)
