@@ -5,10 +5,12 @@
 </article>
 
 ## 最新版本 0.0.5
-下载out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
+**下载和使用方式**
+下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
 下载当前平台的jre解压到同目录下  
 
-示例  
+**app目录各文件解释**  
+config 配置信息，下载任务缓存  
 cynet_javafxgui.jar 主程序文件，版本更新直接下载替换掉即可  
 run_linux_mac.bash 跨平台运行脚本  
 run_windows.bat 跨平台运行脚本  
