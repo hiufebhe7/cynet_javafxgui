@@ -496,6 +496,7 @@ class Task {
         outputDownload.close()
         if (runing) {
             callExit(0)
+
             runing = false
             onComplete(null)
         } else {
