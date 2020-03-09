@@ -1,6 +1,6 @@
 # cynet
 
-一款基于 **![Mastodon](https://github.com/tootsuite/mastodon)**  **上传，下载，分享** 功能的网盘app。  
+一款基于 **[Mastodon](https://github.com/tootsuite/mastodon)**  **上传，下载，分享** 功能的网盘app。  
 
 <article class="logo">
     <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo3.svg" alt="logo" width="128" height="128" align="bottom" />
