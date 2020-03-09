@@ -4,7 +4,7 @@
 	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
 
-## 最新版本 0.0.4
+## 最新版本 0.0.5
 由于国内上传速度十分不稳定，目前移除jar+jre下载。  
 预编译文件为out/artifacts/cynet_javafxgui_jar/*  
 需要下载当前平台的jre解压到同目录下  
