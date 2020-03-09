@@ -5,7 +5,7 @@
 </article>
 
 ## 最新版本 0.0.5
-**下载和使用方式**
+**下载和使用方式**  
 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
 下载当前平台的jre解压到同目录下  
 
