@@ -21,22 +21,25 @@
 
 ## 最新版本 0.0.6
 
-**下载和使用方式**  
-下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
-下载当前平台的jre解压到同目录下  
-
-修改跨平台运行脚本里面的jre指向目录和jre文件目录命名保持一致
+1. 下载[jre8.241运行时](https://github.com/hiufebhe7/cynet_javafxgui/releases/tag/0.0.0)  
+   
+   2. 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件  
+      
+      3. 解压前平台的jre到目录下  
 
 **app目录各文件解释**  
-config 配置信息，下载任务缓存  
+cache 下载任务缓存    
+cache/config.json  app配置信息
+
 cynet_javafxgui.jar 主程序文件，版本更新直接下载替换掉即可  
 run_linux_mac.bash 跨平台运行脚本  
 run_windows.bat 跨平台运行脚本  
-jre1.8.0_241 (jre运行时，cynet基于jre1.8.0_241开发)  
+jre1.8.0_241 jre运行时  
 
 ## 使用注意
 
 1. 上传的文件不要使用过长的文件命名，不然会发生错误。最好使用简单的英文命名。不然有时候会发生文件读写错误。原因是在缓存读写编码时被编码的文件名会过长超出当前系统最长文件名限制。
+2. 任务未暂停前不要destroy任务
 
 ## 开发初衷
 
