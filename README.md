@@ -11,8 +11,6 @@
 
 ### 开发依赖
 
-* **[Mastodon](https://github.com/tootsuite/mastodon)**
-
 * javafx  
 
 * kotlin  
