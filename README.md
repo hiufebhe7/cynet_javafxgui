@@ -19,7 +19,7 @@
 
 * jdk8+
 
-## 最新版本 0.0.5
+## 最新版本 0.0.6
 
 **下载和使用方式**  
 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
