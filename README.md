@@ -1,19 +1,18 @@
 # cynet 
 一款基于 **mastodon** 上传 下载 分享 功能的网盘app。  
 <article class="logo">
-	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo.svg" alt="logo" width="128" height="128" align="bottom" />
+	<img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo3.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
 
 ## 最新版本 0.0.5
-由于国内上传速度十分不稳定，目前移除jar+jre下载。  
-预编译文件为out/artifacts/cynet_javafxgui_jar/*  
-需要下载当前平台的jre解压到同目录下  
-比如  
+下载out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件
+下载当前平台的jre解压到同目录下  
 
-cynet_javafxgui.jar  
-run_linux_mac.bash  
-run_windows.bat  
-jre1.8.0_241(jre运行时，当前开发版本为8.241，如果下载的是其他版本需要修改 run 脚本里面的jre目录路径)  
+示例  
+cynet_javafxgui.jar 主程序文件  
+run_linux_mac.bash 跨平台运行脚本  
+run_windows.bat 跨平台运行脚本  
+jre1.8.0_241(jre运行时，)  
 
 ## 使用注意
 上传的文件不要使用过长的文件命名，不然会发生错误。最好使用简单的英文命名。不然有时候会发生文件读写错误。原因是在缓存读写编码时被编码的文件名会过长超出当前系统最长文件名限制。
@@ -36,4 +35,4 @@ jre1.8.0_241(jre运行时，当前开发版本为8.241，如果下载的是其�
  
 ### 最后关，于本项目。  
 cynet会持续更新，作者目前半全职开发。继续完善它的功能。  
-**最美好的记忆，给最爱的人(●’◡’●)**
+**此app给最爱的cy(●’◡’●)**
