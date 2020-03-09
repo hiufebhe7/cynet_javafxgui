@@ -26,12 +26,13 @@
 3. 解压前平台的jre到目录下  
 
 **app目录各文件解释**  
-/cache/        下载任务缓存    
-/cache/config.json        app配置信息  
-cynet_javafxgui.jar        主程序文件，版本更新直接下载替换掉即可  
-run_linux_mac.bash        跨平台运行脚本  
-run_windows.bat        跨平台运行脚本  
-/jre1.8.0_241/*        jre运行时  
+| 文件名                                | 描述                  |
+| ---------------------------------- | ------------------- |
+| /cache/                            | 下载任务缓存              |
+| /cache/config.json                 | app配置信息             |
+| cynet_javafxgui.jar                | 主程序文件，版本更新直接下载替换掉即可 |
+| run_windows.bat，run_linux_mac.bash | 跨平台运行脚本             |
+| /jre1.8.0_241/*                    | jre运行时              |
 
 ## 使用注意
 
