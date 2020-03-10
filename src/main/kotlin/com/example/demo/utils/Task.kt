@@ -61,9 +61,9 @@ class Task {
     val api: API?
     val maxRetry: Int
 
+    var loop = false
     var runing = false
-        get() = field
-        set
+    var free = false
 
     private var thread: Thread? = null
     private var bytesNull: ByteArray
@@ -80,26 +80,18 @@ class Task {
     var onComplete = { msg: String? -> }
     var onMessage = { msg: String -> }
 
-    //    var onRun = { }
-//    var onStop = { }
-//    var onDestroy = { }
     var onExit = { code: Int -> }
 
     private var fileTmp: File? = null
 
-    private var endPoint = true
-    private var complete = false
-
     private var streamRequest: StreamRequestBody? = null
 
     var cyPack: CyPack? = null
-        set
-        get() = field
 
     init {
         val resourceNull = javaClass.getResource(Const.FILE_NULL)
         bytesNull = resourceNull.readBytes()
-        this.maxRetry = 9
+        maxRetry = 9
     }
 
     constructor(pipe: Pipe, api: API?) {
@@ -113,9 +105,9 @@ class Task {
     }
 
     fun run() {
-        if (!runing && endPoint) {
+        if (!runing) {
+            loop = true
             runing = true
-            endPoint = false
             thread = thread {
                 when (pipe) {
                     is Upload -> upload()
@@ -127,11 +119,8 @@ class Task {
     }
 
     fun stop() {
-        runing = false
+        loop = false
         println("task stop")
-        if (!runing) {
-            callExit(0x01)
-        }
     }
 
     fun destroy() {
@@ -173,7 +162,7 @@ class Task {
         var sizeRead = 0
 
         onReadyStart()
-        while (runing) {
+        while (loop) {
 
             sizeRead = inputSource.read(bytesSource)
             if (sizeRead == -1) {
@@ -194,7 +183,7 @@ class Task {
             while (true) {
 
                 if (retry > maxRetry) {
-                    runing = false
+                    loop = false
                     break
                 }
                 retry++
@@ -214,7 +203,7 @@ class Task {
                     onReadyProgress(datau.size, datau.sizeAll)
                     break
                 } catch (e: Exception) {
-                    if (runing) {
+                    if (loop) {
                         onReadyMessage("upload file error,retry $retry")
                         continue
                     } else {
@@ -231,7 +220,7 @@ class Task {
         outTmp.flush()
         outTmp.close()
 
-        if (runing) {
+        if (loop) {
             onReadyComplete(null)
             encodeCynet()
         } else {
@@ -272,10 +261,10 @@ class Task {
 
         var media: Media? = null
         var retry = 0
-        while (runing) {
+        while (loop) {
 
             if (retry > maxRetry) {
-                runing = false
+                loop = false
                 break
             }
             retry++
@@ -293,7 +282,7 @@ class Task {
             }
         }
 
-        if (!runing) {
+        if (!loop) {
             fileTmp!!.outputStream().close()
             callExit(0x20)
         }
@@ -311,11 +300,10 @@ class Task {
         outTmp.close()
 
         onComplete(str)
-        runing = false
         callExit(0)
     }
 
-    fun decodeCynet() {
+    private fun decodeCynet() {
 
         onReadyStart()
 
@@ -337,6 +325,7 @@ class Task {
 
         var retry = 0
         while (maxRetry > retry) {
+
             retry++
             try {
                 val response = http.newCall(request)
@@ -395,7 +384,11 @@ class Task {
         onReadyComplete(null)
     }
 
-    fun download() {
+    private fun download() {
+
+        if (cyPack == null) {
+            decodeCynet()
+        }
 
         val pd = pipe as Download
         val filePath = Paths.get(pd.path, pd.filename).toFile().path
@@ -425,10 +418,10 @@ class Task {
 
         onStart()
         var retry = 0
-        while (runing) {
+        while (loop) {
 
             if (retry > maxRetry) {
-                runing = false
+                loop = false
                 break
             }
             retry++
@@ -459,7 +452,7 @@ class Task {
                 var sizeAll = 0
                 val bufferNullPack = Buffer()
                 while (input.read(buffer).also({ len = it }) != -1) {
-                    if (!runing) {
+                    if (!loop) {
                         break
                     }
                     if (first) {
@@ -478,15 +471,20 @@ class Task {
                     pd.size += dataPack.size
                     retry = 0
                     onProgress(pd.size, pd.sizeAll)
+                } else {
+                    throw Exception("read error")
                 }
             } catch (e: Exception) {
-                if (runing) {
-                    pd.seek--
+                pd.seek--
+                if (loop) {
                     onMessage(e.toString())
                 } else {
                     break
                 }
             }
+        }
+        if (loop) {
+            pd.seek--
         }
 //        println("download over")
         val gson = Gson().toJson(pd)
@@ -494,23 +492,25 @@ class Task {
         outputTmp.write(gson.toByteArray())
         outputTmp.flush()
         outputTmp.close()
+
         outputDownload.close()
-        if (runing) {
-            callExit(0)
-            runing = false
+        outputTmp.close()
+
+        if (loop) {
             onComplete(null)
+            callExit(0)
         } else {
             callExit(0x40)
         }
     }
 
-    fun callExit(code: Int) {
-        endPoint = true
+    private fun callExit(code: Int) {
+        loop = false
+        runing = false
         onExit(code)
-//        println(code)
     }
 
-    fun tWrite(bytes: ByteArray, seek: Int) {
+    private fun tWrite(bytes: ByteArray, seek: Int) {
         val file = File("D:\\m\\pjs\\media\\part_${seek}.gif")
         val out = file.outputStream()
         out.write(bytes)

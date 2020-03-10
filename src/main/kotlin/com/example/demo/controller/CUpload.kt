@@ -13,7 +13,6 @@ import javafx.scene.control.ProgressIndicator
 import javafx.scene.control.TextField
 import javafx.scene.layout.Pane
 import javafx.stage.FileChooser
-import javafx.stage.Modality
 import javafx.stage.Stage
 import layout.CTask
 import tornadofx.*
@@ -45,7 +44,7 @@ class CUpload : Controller(), Initializable {
     @FXML
     private lateinit var btnUpload: Button
 
-    private var stage: Stage? = null
+    private var pstage: Stage? = null
 
     init {
     }
@@ -96,7 +95,7 @@ class CUpload : Controller(), Initializable {
             val input = tefInstance.text != "" && tefUsername.text != "" && tefPassword.text != ""
             val file = File(textfPath.text)
             if (input && file.isFile) {
-                stage!!.close()
+                pstage!!.close()
                 Config.single.managerConnect.add(connect)
                 Config.single.save()
                 val u = Upload(connect, file.name, file.parentFile.path, Const.UNIT_1MB * 3)
@@ -108,7 +107,7 @@ class CUpload : Controller(), Initializable {
     }
 
     fun lateinit(stage: Stage) {
-        this.stage = stage
+        this.pstage = stage
     }
 
     fun syncInput(c: Connect) {
@@ -159,6 +158,13 @@ class CUpload : Controller(), Initializable {
         loader.location = resource
         val content = loader.load<Pane>()
 
+        pstage!!.let {
+            val scene = Scene(it.pane())
+            scene.root = content
+            it.scene = scene
+            it.show()
+        }
+
         val taskui = loader.getController<CTask>()
         val api = API(u.connect)
         val task = Task(u, api)
@@ -171,34 +177,42 @@ class CUpload : Controller(), Initializable {
                 taskui.size = p.size
             }
         }
-        task.onReadyUpdate = { total: Int, size: Int, len: Int ->
-            println("onReadySend:${total / size.toDouble()}")
+        task.onReadyUpdate = { size: Int, sizeAll: Int, len: Int ->
+            println("onReadyUpdate:${size / sizeAll.toDouble()}")
             Platform.runLater {
-//                taskui.sizeLen += len
-                taskui.progress = total / size.toDouble()
+                taskui.progress = size / sizeAll.toDouble()
             }
         }
-        task.onReadyProgress = { total: Int, size: Int ->
-            println("onReadyProgress:${total / size.toDouble()}")
+        task.onReadyProgress = { size: Int, sizeAll: Int ->
+            println("onReadyProgress:${size / sizeAll.toDouble()}")
             Platform.runLater {
-                taskui.sizeAll = size
-                taskui.size = total
+                taskui.sizeAll = sizeAll
+                taskui.size = size
             }
         }
         task.onReadyMessage = {
-            println("onReadyError:${it}")
+            println("onReadyMessage:${it}")
         }
         task.onReadyComplete = {
             println("onReadyComplete")
+            Platform.runLater {
+                taskui.active(false)
+            }
         }
         task.onStart = {
             println("onStart")
+            Platform.runLater {
+                taskui.active(false)
+            }
         }
-        task.onUpdate = { total: Int, size: Int, len: Int ->
-            println("onSend:${total / size.toDouble()}")
+        task.onUpdate = { size: Int, sizeAll: Int, len: Int ->
+            println("onSend:${size / sizeAll.toDouble()}")
+            Platform.runLater {
+                taskui.progress = size / sizeAll.toDouble()
+            }
         }
-        task.onProgress = { total: Int, size: Int ->
-            println("onProgress:${total / size.toDouble()}")
+        task.onProgress = { size: Int, sizeAll: Int ->
+            println("onProgress:${size / sizeAll.toDouble()}")
         }
         task.onMessage = {
             println("onError:${it}")
@@ -211,7 +225,10 @@ class CUpload : Controller(), Initializable {
         }
         task.onExit = {
             Platform.runLater {
-                if (it > 0x0f){
+                if (it > 0x0f) {
+                    taskui.stopUI()
+                }
+                if (it ==0) {
                     taskui.stop()
                 }
                 taskui.active(true)
@@ -228,15 +245,9 @@ class CUpload : Controller(), Initializable {
 
         }
 
-        val stage = Stage()
-        val scene = Scene(stage.pane())
-        scene.root = content
-        stage.scene = scene
-        stage.initModality(Modality.WINDOW_MODAL)
-        stage.show()
-
-        taskui.lateInit(task,stage)
-        taskui.stop()
+        taskui.lateInit(task, pstage)
+        taskui.active(false)
+        api.call()
     }
 
 }

@@ -34,7 +34,7 @@ class StreamRequestBody : RequestBody {
             var total = 0L
             var read = 0L
             while (source.read(sink.buffer(), 1024).also({ read = it }) != -1L) {
-                if (!task.runing){
+                if (!task.loop){
                     break
                 }
                 total += read

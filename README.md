@@ -19,19 +19,22 @@
 
 * jdk8
 
-## 最新版本 0.0.6
+## 最新版本 0.1.0
 
 1. 下载[jre8_241运行时](https://github.com/hiufebhe7/cynet_javafxgui/releases/tag/jre)  
 2. 下载/out/artifacts/cynet_javafxgui_jar/*  目录下的jar文件  
 3. 解压前平台的jre到目录下  
 
 **app目录各文件解释**  
+
 | 文件名                                | 描述                  |
 | ---------------------------------- | ------------------- |
-| /cache/                            | 下载任务缓存              |
+| /cache/*                            | 下载任务缓存              |
+| /cache/u.*.json                            | 上传任务缓存              |
+| /cache/d.*.json                            | 下载任务缓存              |
 | /cache/config.json                 | app配置信息             |
 | cynet_javafxgui.jar                | 主程序文件，版本更新直接下载替换掉即可 |
-| run_windows.bat，run_linux_mac.bash | 跨平台运行脚本             |
+| run_windows.bat<br>run_linux_mac.bash | 跨平台运行脚本             |
 | /jre1.8.0_241/*                    | jre运行时              |
 
 ## 使用注意
@@ -41,6 +44,7 @@
 3. 在上传了大概100mb或者更少的数据之后会发生上传阻塞，这是由于mastodon的上传反制机制导致的。
 可以登录当前实例账号上传一张测试图片得到解阻塞时间，通常是10-15分钟后。（目前关于这一点我存在考虑是否要突破反制机制，会对小实例造成很大的负担存疑考虑）
 3. 上传有阻塞反制，下载没有
+
 ## 开发初衷
 
 目标是一个依托mastodon社区的免费，通用的开源网盘app。  

@@ -121,6 +121,8 @@ class CTask : Controller(), Initializable {
 
     var sizeLen: Int = 0
 
+    private lateinit var mediaPlayer:MediaPlayer
+
     override fun initialize(location: URL?, resources: ResourceBundle?) {
 
 //        sizeAll = 512000000
@@ -131,7 +133,7 @@ class CTask : Controller(), Initializable {
 //        type = "u"
 
         tgbRun.setOnMouseClicked {
-            if (tgbRun.isSelected) {
+            if (!task!!.loop) {
                 run()
             } else {
                 stop()
@@ -140,7 +142,7 @@ class CTask : Controller(), Initializable {
 
         btnSetting.setOnMouseClicked {
 
-            if(!task!!.runing){
+            if (!task!!.runing) {
                 val stage = Stage()
                 val scene = Scene(stage.pane())
 
@@ -175,9 +177,10 @@ class CTask : Controller(), Initializable {
             }
         }
 
+
     }
 
-    fun lateInit(task: Task,stage: Stage?) {
+    fun lateInit(task: Task, stage: Stage?) {
         this.task = task
         this.pstage = stage
         active(true)
@@ -187,7 +190,7 @@ class CTask : Controller(), Initializable {
             is Upload -> type = "U"
             is Download -> type = "D"
         }
-        path = Paths.get(pipe.path , pipe.filename).toFile().absolutePath
+        path = Paths.get(pipe.path, pipe.filename).toFile().absolutePath
     }
 
     fun run() {
@@ -201,17 +204,17 @@ class CTask : Controller(), Initializable {
         tgbRun.text = "stop"
         tgbRun.isSelected = false
         task?.stop()
-        active(false)
+    }
+
+    fun stopUI() {
+        tgbRun.text = "stop"
+        tgbRun.isSelected = false
     }
 
     fun destroy() {
         root.removeFromParent()
         pstage?.close()
         task?.destroy()
-    }
-
-    fun decode() {
-        task?.decodeCynet()
     }
 
 //    fun free() {
@@ -222,7 +225,7 @@ class CTask : Controller(), Initializable {
     fun playDing() {
         val resource = javaClass.getResource("/audio/ding.mp3").toExternalForm()
         val media = Media(resource)
-        val mediaPlayer = MediaPlayer(media)
+        mediaPlayer = MediaPlayer(media)
         mediaPlayer.play()
     }
 

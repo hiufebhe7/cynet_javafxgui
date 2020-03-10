@@ -17,10 +17,10 @@ import java.util.regex.Pattern
 
 class API {
 
-    private lateinit var _connect: Connect
+    private var _connect: Connect? = null
 
     val url by lazy {
-        "https://${connect.instance}"
+        "https://${connect!!.instance}"
     }
 
     private lateinit var clientId: String
@@ -39,18 +39,23 @@ class API {
 
     constructor(connect: Connect) {
         this._connect = connect
-        initAPI()
-        initApp()
     }
 
     constructor(connect: Connect, token: String) {
         this._token = token
         this._connect = connect
-        initAPI()
+    }
+
+    fun call() {
+        if (this.connect == null) {
+            initAPI()
+        } else {
+            initAPI()
+            initApp()
+        }
     }
 
     private fun initAPI() {
-
         val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(object : Interceptor {
                     override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
@@ -80,7 +85,7 @@ class API {
 
         val pattern = Pattern.compile("^[A-Za-z]+\\.[A-Za-z]+$")
 
-        if (!pattern.matcher(connect.instance).find()) {
+        if (!pattern.matcher(connect!!.instance).find()) {
             return
         }
 
@@ -100,7 +105,7 @@ class API {
     }
 
     private fun initToken() {
-        _mastodon.token(clientId, clientSecret, Const.SCOPES, Const.GRANT_TYPE, connect.username, connect.password)
+        _mastodon.token(clientId, clientSecret, Const.SCOPES, Const.GRANT_TYPE, connect!!.username, connect!!.password)
                 .enqueue(object : Callback<AccessToken?> {
                     override fun onFailure(p0: Call<AccessToken?>, p1: Throwable) {
                         onToken(p1.toString())

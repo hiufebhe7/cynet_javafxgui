@@ -90,11 +90,14 @@ class CDownload : Controller(), Initializable {
         task.onReadyStart = {
             println("onReadyStart")
         }
-        task.onReadyUpdate = { total: Int, size: Int, len: Int ->
-            println("onReadyUpdate:${total / size.toDouble()}")
+        task.onReadyUpdate = { size: Int, sizeAll: Int, len: Int ->
+            println("onReadyUpdate:${size / sizeAll.toDouble()}")
+            Platform.runLater {
+                taskui.progress = size/sizeAll.toDouble()
+            }
         }
-        task.onReadyProgress = { total: Int, size: Int ->
-            println("onReadyProgress:${total / size.toDouble()}")
+        task.onReadyProgress = { size: Int, sizeAll: Int ->
+            println("onReadyProgress:${size / sizeAll.toDouble()}")
         }
         task.onReadyMessage = {
             println("onReadyError:${it}")
@@ -113,11 +116,10 @@ class CDownload : Controller(), Initializable {
                 taskui.path = Paths.get(p.path , p.filename).toFile().absolutePath
             }
         }
-        task.onUpdate = { total: Int, size: Int, len: Int ->
-            println("onUpdate:${total / size.toDouble()}")
+        task.onUpdate = { size: Int, sizeAll: Int, len: Int ->
+            println("onUpdate:${size / sizeAll.toDouble()}")
             Platform.runLater {
-//                taskui.sizeLen += len
-                taskui.progress = total / size.toDouble()
+                taskui.progress = size / sizeAll.toDouble()
             }
         }
         task.onProgress = { size: Int, sizeAll: Int ->
@@ -137,7 +139,10 @@ class CDownload : Controller(), Initializable {
         }
         task.onExit = {
             Platform.runLater {
-                if (it > 0x0f){
+                if (it > 0x0f) {
+                    taskui.stopUI()
+                }
+                if (it ==0) {
                     taskui.stop()
                 }
                 taskui.active(true)
@@ -145,9 +150,8 @@ class CDownload : Controller(), Initializable {
             println("exit code $it")
         }
         taskui.lateInit(task,pstage)
-        thread {
-            taskui.decode()
-        }
+        taskui.active(false)
+        taskui.run()
     }
 
 }
