@@ -6,8 +6,8 @@
     <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo3.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
 
-| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux) | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple) |
-| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux) | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple) | Android<br>![img](https://img.shields.io/badge/build-success-red.svg?logo=android) |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
 
 ### 开发依赖
 
