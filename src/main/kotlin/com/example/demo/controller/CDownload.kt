@@ -128,7 +128,7 @@ class CDownload : Controller(), Initializable {
             }
         }
         task.onMessage = {
-            println("onError:${it}")
+            println("onMessage:${it}")
         }
         task.onComplete = {
             Platform.runLater {
@@ -137,12 +137,14 @@ class CDownload : Controller(), Initializable {
         }
         task.onExit = {
             Platform.runLater {
+                if (it > 0x0f){
+                    taskui.stop()
+                }
                 taskui.active(true)
             }
             println("exit code $it")
         }
         taskui.lateInit(task,pstage)
-        taskui.stop()
         thread {
             taskui.decode()
         }

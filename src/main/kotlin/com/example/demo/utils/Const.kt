@@ -13,7 +13,7 @@ class Const {
 
     companion object {
 
-        val VERSION = "0.0.6"
+        val VERSION = "0.0.7"
         val APP_NAME = "cynet"
         val SERVER_URL = ""
 

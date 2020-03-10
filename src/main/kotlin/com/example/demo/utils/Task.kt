@@ -129,8 +129,8 @@ class Task {
     fun stop() {
         runing = false
         println("task stop")
-        if (endPoint) {
-            callExit(0)
+        if (!runing) {
+            callExit(0x01)
         }
     }
 
@@ -210,6 +210,7 @@ class Task {
                     datau.urls.add(media.url)
                     datau.size += sizeRead
 
+                    retry = 0
                     onReadyProgress(datau.size, datau.sizeAll)
                     break
                 } catch (e: Exception) {
@@ -234,7 +235,7 @@ class Task {
             onReadyComplete(null)
             encodeCynet()
         } else {
-            callExit(0x01)
+            callExit(0x10)
         }
     }
 
@@ -294,7 +295,7 @@ class Task {
 
         if (!runing) {
             fileTmp!!.outputStream().close()
-            callExit(0x02)
+            callExit(0x20)
         }
 
         val strBase64 = Base64.getEncoder().encode(media!!.url.toByteArray())
@@ -334,9 +335,9 @@ class Task {
 
         var dataPack: ByteArray? = null
 
-        var retrey = 0
-        while (maxRetry > retrey) {
-            retrey++
+        var retry = 0
+        while (maxRetry > retry) {
+            retry++
             try {
                 val response = http.newCall(request)
                         .execute()
@@ -367,7 +368,7 @@ class Task {
         }
 
         if (dataPack!!.size <= 0) {
-            callExit(0x03)
+            callExit(0x30)
             return
         }
 
@@ -475,12 +476,12 @@ class Task {
                     outputDownload.write(dataPack)
                     outputDownload.flush()
                     pd.size += dataPack.size
+                    retry = 0
                     onProgress(pd.size, pd.sizeAll)
-                } else {
-                    pd.seek--
                 }
             } catch (e: Exception) {
                 if (runing) {
+                    pd.seek--
                     onMessage(e.toString())
                 } else {
                     break
@@ -499,7 +500,7 @@ class Task {
             runing = false
             onComplete(null)
         } else {
-            callExit(0x04)
+            callExit(0x40)
         }
     }
 

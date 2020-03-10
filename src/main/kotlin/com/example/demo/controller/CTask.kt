@@ -140,36 +140,38 @@ class CTask : Controller(), Initializable {
 
         btnSetting.setOnMouseClicked {
 
-            val stage = Stage()
-            val scene = Scene(stage.pane())
+            if(!task!!.runing){
+                val stage = Stage()
+                val scene = Scene(stage.pane())
 
-            val vBox = VBox()
+                val vBox = VBox()
 
-            val btnDestroy = Button("destroy")
-            btnDestroy.maxWidth = Double.MAX_VALUE
-            vBox.add(btnDestroy)
-            task?.let {
-                when (it.pipe) {
-                    is Upload -> {
-                        if (!it.pipe.cynet.equals("")) {
-                            val txaCynet = TextArea()
-                            txaCynet.text = it.pipe.cynet
-                            txaCynet.isWrapText = true
-                            txaCynet.maxWidth = Double.MAX_VALUE
-                            vBox.add(txaCynet)
+                val btnDestroy = Button("destroy")
+                btnDestroy.maxWidth = Double.MAX_VALUE
+                vBox.add(btnDestroy)
+                task?.let {
+                    when (it.pipe) {
+                        is Upload -> {
+                            if (!it.pipe.cynet.equals("")) {
+                                val txaCynet = TextArea()
+                                txaCynet.text = it.pipe.cynet
+                                txaCynet.isWrapText = true
+                                txaCynet.maxWidth = Double.MAX_VALUE
+                                vBox.add(txaCynet)
+                            }
                         }
                     }
                 }
-            }
 
-            stage.initModality(Modality.APPLICATION_MODAL)
-            scene.root = vBox
-            stage.scene = scene
-            stage.show()
+                stage.initModality(Modality.APPLICATION_MODAL)
+                scene.root = vBox
+                stage.scene = scene
+                stage.show()
 
-            btnDestroy.setOnMouseClicked {
-                destroy()
-                stage.close()
+                btnDestroy.setOnMouseClicked {
+                    destroy()
+                    stage.close()
+                }
             }
         }
 
@@ -197,6 +199,7 @@ class CTask : Controller(), Initializable {
 
     fun stop() {
         tgbRun.text = "stop"
+        tgbRun.isSelected = false
         task?.stop()
         active(false)
     }

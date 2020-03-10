@@ -211,6 +211,9 @@ class CUpload : Controller(), Initializable {
         }
         task.onExit = {
             Platform.runLater {
+                if (it > 0x0f){
+                    taskui.stop()
+                }
                 taskui.active(true)
             }
             println("exit code $it")
