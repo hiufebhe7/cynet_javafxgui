@@ -6,15 +6,15 @@
     <img src="https://github.com/hiufebhe7/cynet_javafxgui/blob/master/image/logo4.svg" alt="logo" width="128" height="128" align="bottom" />
 </article>
 
-| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux) | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple) |Android<br>![img](https://img.shields.io/badge/build-success-red.svg?logo=android) |
-| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |--------------------------------------------------------------------------------- |
+| Windows<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=windows) | Linux<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=linux) | Mac Os<br>![img](https://img.shields.io/badge/build-success-green.svg?logo=apple) | Android<br>![img](https://img.shields.io/badge/build-success-red.svg?logo=android) |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 
 ### 开发依赖
 
 * javafx  
 
 * kotlin  
- 
+
 * tornadofx 
 
 * jdk8
@@ -27,21 +27,21 @@
 
 **app目录各文件解释**  
 
-| 文件名                                | 描述                  |
-| ---------------------------------- | ------------------- |
-| /cache/*                            | 下载任务缓存              |
-| /cache/u.*.json                            | 上传任务缓存              |
-| /cache/d.*.json                            | 下载任务缓存              |
-| /cache/config.json                 | app配置信息             |
-| cynet_javafxgui.jar                | 主程序文件，版本更新直接下载替换掉即可 |
+| 文件名                                   | 描述                  |
+| ------------------------------------- | ------------------- |
+| /cache/*                              | 下载任务缓存              |
+| /cache/u.*.json                       | 上传任务缓存              |
+| /cache/d.*.json                       | 下载任务缓存              |
+| /cache/config.json                    | app配置信息             |
+| cynet_javafxgui.jar                   | 主程序文件，版本更新直接下载替换掉即可 |
 | run_windows.bat<br>run_linux_mac.bash | 跨平台运行脚本             |
-| /jre1.8.0_241/*                    | jre运行时              |
+| /jre1.8.0_241/*                       | jre运行时              |
 
 ## 使用注意
 
 1. 上传的文件不要使用过长的文件命名，不然会发生错误。最好使用简单的英文命名。不然有时候会发生文件读写错误。原因是在缓存读写编码时被编码的文件名会过长超出当前系统最长文件名限制。
 2. 在上传了大概100mb或者更少的数据之后会发生上传阻塞，这是由于mastodon的上传反制机制导致的。
-可以登录当前实例账号上传一张测试图片得到解阻塞时间，通常是10-15分钟后。（目前关于这一点我存在考虑是否要突破反制机制，会对小实例造成很大的负担存疑考虑）
+   可以登录当前实例账号上传一张测试图片得到解阻塞时间，通常是10-15分钟后。（目前关于这一点我存在考虑是否要突破反制机制，会对小实例造成很大的负担存疑考虑）
 3. 上传有阻塞反制，下载没有
 4. 建议不要上传过大文件 100-500mb 最佳，会对服务器造成较大负担，文件过大也会频繁的阻塞上传权限和实例网络
 
@@ -56,6 +56,7 @@
 3. 更灵活的分享方式。生成一个类似磁力链接的 cynet:?v=0.0.0:i=panic.social:u=xxxxxxxx 地址，直接分享地址即可下载。
 
 ## 最后关，于本项目。
+
 **自觉维护实例，合理使用本网盘**  
 cynet会持续更新，作者目前半全职开发。继续完善它的功能。  
 **此app给最爱的cy(●’◡’●)**
